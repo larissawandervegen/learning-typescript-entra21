@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cliente</title>
+</head>
+<body>
+    <div class="texto">
+        <h1>Editar Cliente</h1>
+    </div>
+    <label>Id</label>
+    <input type="text" id="idCliente">
+    <label>Nome</label>
+    <input type="text" id="nomeCliente">
+    <label>E-mail</label>
+    <input type="email" id="emailCliente">
+    <label>Telefone</label>
+    <input type="tel" id="telCliente">
+    <button id="btSalvar">Salvar</button>
+    <Script>
+        var botao = document.getElementById("btSalvar");
+        botao.addEventListener("click", salvar);
+
+        function salvar() {
+            let idInformado = document.getElementById("idCliente").value
+            var objCliente = {
+                id: idInformado,
+                nome: document.getElementById("nomeCliente").value,
+                email: document.getElementById("emailCliente").value,
+                fone: document.getElementById("telCliente").value
+            };
+
+            fetch(`http://localhost:3000/clientes/${idInformado}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify(objCliente)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Cliente atualizado com sucesso.');
+                    // document.location.href = "pesquisaClientes.html";
+                } else {
+                    throw new Error(`Erro ao atualizar cliente: ${response.status}`);
+                }
+            })
+            .catch(error => console.error('Erro ao atualizar cliente:', error));
+        }
+
+        // var urlParams = new URLSearchParams(window.location.search);
+        // var idCliente = urlParams.get("id");
+        // if (idCliente) {
+        //     fetch(`http://localhost:3000/clientes/${idCliente}`)
+        //     .then(response => response.json())
+        //     .then(cliente => {
+        //         document.getElementById("idCliente").value = cliente.id;
+        //         document.getElementById("nomeCliente").value = cliente.nome;
+        //         document.getElementById("emailCliente").value = cliente.email;
+        //         document.getElementById("telCliente").value = cliente.fone;
+        //     })
+        //     .catch(error => console.error('Erro ao carregar cliente para edição:', error));
+        // }
+    </Script>
+</body>
+</html>
